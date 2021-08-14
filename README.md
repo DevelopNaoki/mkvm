@@ -1,7 +1,7 @@
-# kvm-compose
+# mkvm
 
 ## Overview
-kvm-compose manages VM with YAML file and slightly improved some command
+mkvm manages VM with YAML file and slightly improved some command
 
 ## Install KVM
 Install KVM and virt-install
