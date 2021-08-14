@@ -11,6 +11,7 @@ Install golang
 
 ## Introduction
 - Clone this repository with git command: ``` git clone "https://github.com/naoki2001/kvm-compose" ```
-- Change to the kvm-compose directory``` cd kvm-compose ```
+- Change to the kvm-compose directory``` cd mkvm ```
+- Package download ```go mod download```
 
 ## Unfinished
