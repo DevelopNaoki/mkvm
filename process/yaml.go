@@ -22,7 +22,7 @@ func ReadYAML() (data YamlFile) {
 	return
 }
 
-func CheckYaml (data YamlFile) (err int) {
+func CheckYaml(data YamlFile) (err int) {
 	for i := 0; i < len(data.Vm); i++ {
 	}
 	return

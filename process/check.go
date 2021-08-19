@@ -6,21 +6,21 @@ import (
 )
 
 // Check is the caller of each checking function
-func Check () {
+func Check() {
 	var status string
 
 	status = CheckVirtualization()
-	fmt.Print("Check CPU virtualization...   "+ status +"\n")
+	fmt.Print("Check CPU virtualization...   " + status + "\n")
 
 	status = CheckVirsh()
-	fmt.Print("Check virsh command...        "+ status +"\n")
+	fmt.Print("Check virsh command...        " + status + "\n")
 
 	status = CheckVirtInstall()
-	fmt.Print("Check virt-install command... "+ status +"\n")
+	fmt.Print("Check virt-install command... " + status + "\n")
 }
 
 // CheckVirtualization is checking cpu virtualization enabled
-func CheckVirtualization () (status string) {
+func CheckVirtualization() (status string) {
 	cmd := "grep -E 'svm|vmx' /proc/cpuinfo"
 	err := exec.Command("sh", "-c", cmd).Run()
 
@@ -33,7 +33,7 @@ func CheckVirtualization () (status string) {
 }
 
 // CheckVirsh is checking virsh command installed
-func CheckVirsh () (status string) {
+func CheckVirsh() (status string) {
 	err := exec.Command("virsh", "version").Run()
 	if err == nil {
 		status = "[\x1b[32mPass\x1b[0m]"
@@ -43,12 +43,12 @@ func CheckVirsh () (status string) {
 	return
 }
 
-func CheckVirtInstall () (status string) {
-        err := exec.Command("virt-install", "--version").Run()
-        if err == nil {
-                status = "[\x1b[32mPass\x1b[0m]"
-        } else {
-                status = "[\x1b[31mFalse\x1b[0m]"
-        }
-        return
+func CheckVirtInstall() (status string) {
+	err := exec.Command("virt-install", "--version").Run()
+	if err == nil {
+		status = "[\x1b[32mPass\x1b[0m]"
+	} else {
+		status = "[\x1b[31mFalse\x1b[0m]"
+	}
+	return
 }

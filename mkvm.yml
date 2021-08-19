@@ -1,5 +1,6 @@
 vms:
   - name: test
+    count: 2
     vcpus: 1
     memory: 1024
     disk:

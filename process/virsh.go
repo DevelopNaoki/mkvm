@@ -21,7 +21,7 @@ func VMList(option string) {
 			"--" + option,
 		}
 	} else {
-		fmt.Print("error: Unknown option: "+ option +"\n")
+		fmt.Print("error: Unknown option: " + option + "\n")
 		return
 	}
 
@@ -40,16 +40,16 @@ func VMList(option string) {
 func VMOperation(name string, cont string) {
 	status := VMSearch(name)
 	if status == "NotFound" {
-		fmt.Print("error: "+ name +" not found\n")
+		fmt.Print("error: " + name + " not found\n")
 		return
 	} else if status == "active" && cont == "start" {
-		fmt.Print("error: "+ name +" is already running\n")
+		fmt.Print("error: " + name + " is already running\n")
 		return
 	} else if status == "inactive" && (cont == "shutdown" || cont == "destroy") {
 		fmt.Print("error: " + name + " is already stopping\n")
 		return
 	} else {
-                fmt.Print("error: Command execution failed\n")
+		fmt.Print("error: Command execution failed\n")
 		return
 	}
 

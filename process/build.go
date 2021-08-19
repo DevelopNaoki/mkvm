@@ -1,51 +1,74 @@
 package process
 
 import (
-	"fmt"
 	"os/exec"
+	"strconv"
+	"strings"
 )
 
-func Build () {
+func Build() {
 	data := ReadYAML()
 	_ = CheckYaml(data)
-	BuildVM(data)
-	fmt.Print("\n")
+	for i := 0; i < len(data.Vm); i++ {
+		BuildVM(data.Vm[i])
+	}
 }
 
-func BuildVM (data YamlFile) {
-	for i := 0; i < len(data.Vm); i++ {
-		arg := []string{
-			"--name", data.Vm[i].Name,
-			"--vcpus", data.Vm[i].Vcpus,
-			"--memory", data.Vm[i].Memory,
-		}
+func BuildVM(data VM) {
+	if data.Count == 0 {
+		data.Count = 1
+	}
 
-		if data.Vm[i].Disk.ImportDisk == true {
-			importDisk := "path="+data.Vm[i].Disk.Path
+	for i := 0; i < data.Count; i++ {
+		arg := []string{"--name",}
+
+		if data.Count == 1 {
+			arg = append(arg, data.Name)
+		} else {
+			arg = append(arg, data.Name+strconv.Itoa(i))
+		}
+		arg = append(arg, "--vcpus")
+		arg = append(arg, data.Vcpus)
+		arg = append(arg, "--memory")
+		arg = append(arg, data.Memory)
+
+		if data.Disk.ImportDisk == true {
+			importDisk := "path=" + data.Disk.Path
 			arg = append(arg, "--disk")
 			arg = append(arg, importDisk)
-			arg = append(arg, "import")
+			arg = append(arg, "--import")
 		} else {
-			importDisk := "path="+data.Vm[i].Disk.Path+",format="+data.Vm[i].Disk.Format+",size="+data.Vm[i].Disk.Size
-                        arg = append(arg, "--disk")
-                        arg = append(arg, importDisk)
-		}
-
-		if data.Vm[i].Cdrom != "" {
-			arg = append(arg, "--cdrom")
-			arg = append(arg, data.Vm[i].Cdrom)
-		} else {
-			arg = append(arg, "--location")
-			arg = append(arg, data.Vm[i].Location)
-			if data.Vm[i].ExtraArgs != "" {
-				arg = append(arg, "--extra-args")
-				arg = append(arg, data.Vm[i].ExtraArgs)
+			if data.Count > 1 {
+				var disk [2]string
+				slice := strings.Split(data.Disk.Path, ".")
+				for i, str := range slice {
+					disk[i] = str
+				}
+				createDisks := "path=" + disk[0] + strconv.Itoa(i) + "." + disk[1] + ",format=" + data.Disk.Format + ",size=" + data.Disk.Size
+				arg = append(arg, "--disk")
+				arg = append(arg, createDisks)
+			} else {
+				createDisk := "path=" + data.Disk.Path + ",format=" + data.Disk.Format + ",size=" + data.Disk.Size
+				arg = append(arg, "--disk")
+				arg = append(arg, createDisk)
 			}
 		}
 
-		for j := 0; j < len(data.Vm); j++{
+		if data.Cdrom != "" {
+			arg = append(arg, "--cdrom")
+			arg = append(arg, data.Cdrom)
+		} else {
+			arg = append(arg, "--location")
+			arg = append(arg, data.Location)
+			if data.ExtraArgs != "" {
+				arg = append(arg, "--extra-args")
+				arg = append(arg, data.ExtraArgs)
+			}
+		}
+
+		for j := 0; j < len(data.Network); j++ {
 			arg = append(arg, "--network")
-			arg = append(arg, data.Vm[i].Network[j])
+			arg = append(arg, data.Network[j])
 		}
 
 		cmd := exec.Command("virt-install", arg...)
