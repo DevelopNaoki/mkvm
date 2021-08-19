@@ -20,7 +20,7 @@ func BuildVM(data VM) {
 	}
 
 	for i := 0; i < data.Count; i++ {
-		arg := []string{"--name",}
+		arg := []string{"--name"}
 
 		if data.Count == 1 {
 			arg = append(arg, data.Name)
@@ -28,9 +28,9 @@ func BuildVM(data VM) {
 			arg = append(arg, data.Name+strconv.Itoa(i))
 		}
 		arg = append(arg, "--vcpus")
-		arg = append(arg, data.Vcpus)
+		arg = append(arg, strconv.Itoa(data.Vcpus))
 		arg = append(arg, "--memory")
-		arg = append(arg, data.Memory)
+		arg = append(arg, strconv.Itoa(data.Memory))
 
 		if data.Disk.ImportDisk == true {
 			importDisk := "path=" + data.Disk.Path
@@ -44,11 +44,11 @@ func BuildVM(data VM) {
 				for i, str := range slice {
 					disk[i] = str
 				}
-				createDisks := "path=" + disk[0] + strconv.Itoa(i) + "." + disk[1] + ",format=" + data.Disk.Format + ",size=" + data.Disk.Size
+				createDisks := "path=" + disk[0] + strconv.Itoa(i) + "." + disk[1] + ",format=" + data.Disk.Format + ",size=" + strconv.Itoa(data.Disk.Size)
 				arg = append(arg, "--disk")
 				arg = append(arg, createDisks)
 			} else {
-				createDisk := "path=" + data.Disk.Path + ",format=" + data.Disk.Format + ",size=" + data.Disk.Size
+				createDisk := "path=" + data.Disk.Path + ",format=" + data.Disk.Format + ",size=" + strconv.Itoa(data.Disk.Size)
 				arg = append(arg, "--disk")
 				arg = append(arg, createDisk)
 			}

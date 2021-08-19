@@ -9,8 +9,8 @@ type YamlFile struct {
 type VM struct {
 	Name      string   `yaml:name`
 	Count     int      `yaml:count`
-	Vcpus     string   `yaml:vcpus`
-	Memory    string   `yaml:memory`
+	Vcpus     int      `yaml:vcpus`
+	Memory    int      `yaml:memory`
 	Disk      Disk     `yaml:disk`
 	Graphics  string   `yaml:graphics`
 	Location  string   `yaml:location`
@@ -22,6 +22,6 @@ type VM struct {
 type Disk struct {
 	Path       string `yaml:path`
 	Format     string `yaml:format`
-	Size       string `yaml:size`
+	Size       int    `yaml:size`
 	ImportDisk bool   `yaml:import`
 }
