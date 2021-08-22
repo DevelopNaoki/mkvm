@@ -2,8 +2,8 @@ package process
 
 import (
 	"fmt"
-	"os"
 	"io/ioutil"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )

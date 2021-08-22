@@ -28,16 +28,16 @@ func BuildVM(data VM) {
 			if CheckVMStatus(data.Name) == "NotFound" {
 				arg = append(arg, data.Name)
 			} else {
-				fmt.Print("error: "+ data.Name +" is already existed^n")
+				fmt.Print("error: " + data.Name + " is already existed^n")
 				os.Exit(1)
 			}
 		} else {
 			if CheckVMStatus(data.Name+strconv.Itoa(i)) == "NotFound" {
 				arg = append(arg, data.Name+strconv.Itoa(i))
 			} else {
-                                fmt.Print("error: "+ data.Name+strconv.Itoa(i) +" is already existed\n")
+				fmt.Print("error: " + data.Name + strconv.Itoa(i) + " is already existed\n")
 				os.Exit(1)
-                        }
+			}
 		}
 		arg = append(arg, "--vcpus")
 		arg = append(arg, strconv.Itoa(data.Vcpus))

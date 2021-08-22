@@ -67,7 +67,7 @@ func CheckVMStatus(name string) (status string) {
 			status = "active"
 		}
 	} else if err.Error() == "exit status 1" {
-                status = "NotFound"
+		status = "NotFound"
 	} else {
 		fmt.Print("error: command exection error for checking vm status\n")
 		os.Exit(1)
@@ -81,11 +81,11 @@ func CheckFile(path string) (status string) {
 
 	if err != nil {
 		status = "AlreadyExist"
-	} else if err.Error() == "exit code 1"{
+	} else if err.Error() == "exit code 1" {
 		status = "NotFound"
 	} else {
 		fmt.Print("error: command exection error for checking vm status\n")
-                os.Exit(1)
+		os.Exit(1)
 	}
 	return status
 }
