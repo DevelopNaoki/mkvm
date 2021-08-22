@@ -9,36 +9,32 @@ import (
 
 // VMList executes virsh list [option]
 func VMList(option string) {
-	var args []string
+	var args string
 
 	if option == "active" {
-		args = []string{
-			"list",
-		}
+		args = "list"
 	} else if option == "all" || option == "inactive" {
-		args = []string{
-			"list",
-			"--" + option,
-		}
+		args = "list --" + option
 	} else {
 		fmt.Print("error: Unknown option: " + option + "\n")
 		return
 	}
 
-	cmd := exec.Command("virsh", args...)
+	cmd := exec.Command("virsh", args)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 
 	if err != nil {
 		fmt.Print("error: Command execution failed\n")
+		panic(err)
 	}
 	return
 }
 
 // VMOperation is doing VM operation: virsh [cont] [name]
 func VMOperation(name string, cont string) {
-	status := VMSearch(name)
+	status := CheckVMStatus(name)
 	if status == "NotFound" {
 		fmt.Print("error: " + name + " not found\n")
 		return
@@ -55,14 +51,9 @@ func VMOperation(name string, cont string) {
 
 	fmt.Print(cont + "VM \n")
 
-	arg := []string{
-		cont,
-		name,
-	}
-
-	exec.Command("virsh", arg...).Start()
+	exec.Command("virsh", cont, name).Start()
 	for {
-		status := VMSearch(name)
+		status := CheckVMStatus(name)
 		if (status == "active" && cont == "start") || (status == "inactive" && (cont == "shutdown" || cont == "destroy")) {
 			fmt.Print("success\n")
 			break
@@ -71,23 +62,4 @@ func VMOperation(name string, cont string) {
 		fmt.Print("*")
 	}
 	return
-}
-
-// VMSearch is serch VM by virsh command
-func VMSearch(name string) (status string) {
-	cmd := "virsh list --all | grep " + name
-	err := exec.Command("sh", "-c", cmd).Run()
-
-	if err != nil {
-		status = "NotFound"
-	} else {
-		cmd = "virsh list | grep " + name
-		err = exec.Command("sh", "-c", cmd).Run()
-		if err != nil {
-			status = "inactive"
-		} else {
-			status = "active"
-		}
-	}
-	return status
 }

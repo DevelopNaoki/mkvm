@@ -1,6 +1,8 @@
 package process
 
 import (
+	"fmt"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -23,9 +25,19 @@ func BuildVM(data VM) {
 		arg := []string{"--name"}
 
 		if data.Count == 1 {
-			arg = append(arg, data.Name)
+			if CheckVMStatus(data.Name) == "NotFound" {
+				arg = append(arg, data.Name)
+			} else {
+				fmt.Print("error: "+ data.Name +" is already existed^n")
+				os.Exit(1)
+			}
 		} else {
-			arg = append(arg, data.Name+strconv.Itoa(i))
+			if CheckVMStatus(data.Name+strconv.Itoa(i)) == "NotFound" {
+				arg = append(arg, data.Name+strconv.Itoa(i))
+			} else {
+                                fmt.Print("error: "+ data.Name+strconv.Itoa(i) +" is already existed\n")
+				os.Exit(1)
+                        }
 		}
 		arg = append(arg, "--vcpus")
 		arg = append(arg, strconv.Itoa(data.Vcpus))

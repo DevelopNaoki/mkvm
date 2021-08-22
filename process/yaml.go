@@ -1,6 +1,8 @@
 package process
 
 import (
+	"fmt"
+	"os"
 	"io/ioutil"
 
 	"gopkg.in/yaml.v2"
@@ -10,8 +12,8 @@ import (
 func ReadYAML() (data YamlFile) {
 	buf, err := ioutil.ReadFile("mkvm.yml")
 	if err != nil {
-		Error(30, "faild read file")
-		return
+		fmt.Print("error: faild read mkvm.yml\n")
+		os.Exit(1)
 	}
 
 	err = yaml.Unmarshal(buf, &data)

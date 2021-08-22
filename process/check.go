@@ -2,6 +2,7 @@ package process
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 )
 
@@ -43,6 +44,7 @@ func CheckVirsh() (status string) {
 	return
 }
 
+// CheckVirtInstall is checking virt-install command installed
 func CheckVirtInstall() (status string) {
 	err := exec.Command("virt-install", "--version").Run()
 	if err == nil {
@@ -51,4 +53,39 @@ func CheckVirtInstall() (status string) {
 		status = "[\x1b[31mFalse\x1b[0m]"
 	}
 	return
+}
+
+// CheckVMStatus is checking vm name and status
+func CheckVMStatus(name string) (status string) {
+	err := exec.Command("sh", "-c", "virsh list --all | grep "+name).Run()
+
+	if err == nil {
+		err := exec.Command("sh", "-c", "virsh list | grep "+name).Run()
+		if err == nil {
+			status = "inactive"
+		} else {
+			status = "active"
+		}
+	} else if err.Error() == "exit status 1" {
+                status = "NotFound"
+	} else {
+		fmt.Print("error: command exection error for checking vm status\n")
+		os.Exit(1)
+	}
+	return status
+}
+
+// CheckFile is checking file exsist
+func CheckFile(path string) (status string) {
+	err := exec.Command("find", path).Run()
+
+	if err != nil {
+		status = "AlreadyExist"
+	} else if err.Error() == "exit code 1"{
+		status = "NotFound"
+	} else {
+		fmt.Print("error: command exection error for checking vm status\n")
+                os.Exit(1)
+	}
+	return status
 }
