@@ -5,9 +5,9 @@ import (
 	"runtime"
 )
 
-// Version view version of kvm-compose
+// Version view version of mkvm
 func Version() {
-	fmt.Print("kvm-compose version: 1.0.0 alpha\n")
+	fmt.Print("mkvm version: 1.0.0 alpha\n")
 	fmt.Println("go version: ", runtime.Version())
 	return
 }
