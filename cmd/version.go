@@ -8,9 +8,9 @@ import (
 
 var version = &cobra.Command{
 	Use:   "version",
-	Short: "Print kvm-compose version",
+	Short: "Print mkvm version",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Print("kvm-compose version 1.0.0a\n")
+		fmt.Print("mkvm version 1.0.0a\n")
 		return nil
 	},
 }
