@@ -8,7 +8,7 @@ import (
 
 var list = &cobra.Command{
 	Use:   "list",
-	Short: "Print VM status",
+	Short: "display VM status",
 	Args:  cobra.RangeArgs(0, 1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 2 {

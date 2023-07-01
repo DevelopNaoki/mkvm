@@ -8,8 +8,7 @@ import (
 
 var build = &cobra.Command{
 	Use:   "build",
-	Short: "build VM by mkvm.yml",
-	Args:  cobra.RangeArgs(0, 1),
+	Short: "build VM with mkvm.yml",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		process.Build()
 		return nil

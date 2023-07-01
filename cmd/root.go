@@ -8,7 +8,7 @@ import (
 
 var RootCmd = &cobra.Command{
 	Use:   "mkvm",
-	Short: "mkvm manages and builds VMs by mkvm.yml",
+	Short: "mkvm is manages and builds VMs with mkvm.yml",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Print("error: need subcommand\n")
 	},
