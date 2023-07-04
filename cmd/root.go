@@ -10,7 +10,7 @@ var RootCmd = &cobra.Command{
 	Use:   "mkvm",
 	Short: "mkvm is manages and builds VMs with mkvm.yml",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return fmt.Errorf("need subcommand\n")
+		return fmt.Errorf("need subcommand")
 	},
 }
 
