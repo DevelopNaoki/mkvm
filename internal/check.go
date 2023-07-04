@@ -6,41 +6,8 @@ import (
 	"os/exec"
 )
 
-// Check is the caller of each checking function
-func Check() error {
-	var status string
-	TRUE := "[\x1b[32mPass\x1b[0m]"
-	FALSE := "[\x1b[31mFalse\x1b[0m]"
-
-	err1 := EnableCPUVirtualization()
-	if err1 != nil {
-		status = FALSE
-	} else {
-		status = TRUE
-	}
-	fmt.Print("Check CPU virtualization...   " + status + "\n")
-
-	err2 := CanExecVirsh()
-	if err2 != nil {
-		status = FALSE
-	} else {
-		status = TRUE
-	}
-	fmt.Print("Check virsh command...        " + status + "\n")
-
-	err3 := CanExecVirtInstall()
-	if err3 != nil {
-		status = FALSE
-	} else {
-		status = TRUE
-	}
-	fmt.Print("Check virt-install command... " + status + "\n")
-
-	if err1 != nil || err2 != nil || err3 != nil {
-		return fmt.Errorf("failed pass check")
-	}
-	return nil
-}
+var PASS = "[\x1b[32mPass\x1b[0m]"
+var FAIL = "[\x1b[31mFail\x1b[0m]"
 
 // EnableCPUVirtualization checks whether cpu virtualization is enabled.
 func EnableCPUVirtualization() error {
