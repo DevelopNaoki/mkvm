@@ -9,8 +9,7 @@ import (
 var version = &cobra.Command{
 	Use:   "version",
 	Short: "Print mkvm version",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Print("mkvm version 1.0.0a\n")
-		return nil
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Print("mkvm version 1.1.0a\n")
 	},
 }
