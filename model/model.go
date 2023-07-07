@@ -1,7 +1,9 @@
 package model
 
 type YamlFile struct {
-	Vm []VM `yaml:"vms"`
+	Vm      []VM      `yaml:"vms"`
+	Disk    []Disk    `yaml:"disks"`
+	Network []Network `yaml:"networks"`
 }
 
 type VM struct {
@@ -9,7 +11,7 @@ type VM struct {
 	Count     int      `yaml:"count"`
 	Vcpus     int      `yaml:"vcpus"`
 	Memory    int      `yaml:"memory"`
-	Disk      Disk     `yaml:"disk"`
+	Disk      []string `yaml:"disk"`
 	Graphics  string   `yaml:"graphics"`
 	Location  string   `yaml:"location"`
 	ExtraArgs string   `yaml:"extra-args"`
@@ -22,4 +24,9 @@ type Disk struct {
 	Format     string `yaml:"format"`
 	Size       int    `yaml:"size"`
 	ImportDisk bool   `yaml:"import"`
+}
+
+type Network struct {
+	Name string `yaml:"name"`
+	Type string `yaml:"type"`
 }

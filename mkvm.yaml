@@ -1,0 +1,19 @@
+vms:
+  - name: test
+    count: 2
+    vcpus: 1
+    memory: 1024
+    disk:
+      /var/kvm/images/test.img
+    graphics: vnc,listen=0.0.0.0
+    location: /var/kvm/isos/CentOS-7-x86_664-Minimal-2009_Auto.iso,kernel=isolinux/vmlinuz,initrd=isolinux/initrd.img
+    extra-args: "inst.ks=cdrom:/ks/anaconda-ks.cfg inst.stage2=cdrom console=tty0 console=ttyS0,115200n8"
+    network:
+    - virbr0
+disks:
+  - path: /var/kvm/images/test.img
+    format: qcow2
+    size: 16
+networks:
+  - name: virbr0
+    type: bridge
