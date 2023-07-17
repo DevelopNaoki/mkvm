@@ -2,7 +2,6 @@ package internal
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 )
 
@@ -37,37 +36,15 @@ func CanExecVirtInstall() error {
 	return nil
 }
 
-// CheckVMStatus is checking vm name and status
-func CheckVMStatus(name string) (status string) {
-	err := exec.Command("sh", "-c", "virsh list --all | grep "+name).Run()
-
-	if err == nil {
-		err := exec.Command("sh", "-c", "virsh list | grep "+name).Run()
-		if err == nil {
-			status = "inactive"
-		} else {
-			status = "active"
-		}
-	} else if err.Error() == "exit status 1" {
-		status = "NotFound"
-	} else {
-		fmt.Print("error: command exection error for checking vm status\n")
-		os.Exit(1)
-	}
-	return status
-}
-
 // CheckFile is checking file exsist
-func CheckFile(path string) (status string) {
+func CheckFile(path string) (string, error) {
 	err := exec.Command("find", path).Run()
 
 	if err != nil {
-		status = "AlreadyExist"
+		return "exist", nil
 	} else if err.Error() == "exit code 1" {
-		status = "NotFound"
+		return "doesNotExist", nil
 	} else {
-		fmt.Print("error: command exection error for checking vm status\n")
-		os.Exit(1)
+		return "", fmt.Errorf("command exection error for checking vm status")
 	}
-	return status
 }

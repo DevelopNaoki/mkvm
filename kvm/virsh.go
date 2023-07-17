@@ -1,40 +1,42 @@
-package process
+package kvm
 
 import (
 	"fmt"
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/DevelopNaoki/mkvm/model"
 )
 
 // VMList executes virsh list [option]
-func VMList(option string) {
+func VMList(option model.VmListCmdOption) error {
 	var args string
 
-	if option == "active" {
-		args = "list"
-	} else if option == "all" || option == "inactive" {
-		args = "list --" + option
+	if option.All {
+		args = "--all"
+	} else if option.Inactive {
+		args = "--inactive"
+	} else if option.Active {
+		args = ""
 	} else {
-		fmt.Print("error: Unknown option: " + option + "\n")
-		return
+		return fmt.Errorf("option errro")
 	}
 
-	cmd := exec.Command("virsh", args)
+	cmd := exec.Command("virsh", "list", args)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 
 	if err != nil {
-		fmt.Print("error: Command execution failed\n")
-		panic(err)
+		return fmt.Errorf("command execution failed")
 	}
-	return
+	return nil
 }
 
 // VMOperation is doing VM operation: virsh [cont] [name]
 func VMOperation(name string, cont string) {
-	status := CheckVMStatus(name)
+	status, _ := CheckVMStatus(name)
 	if status == "NotFound" {
 		fmt.Print("error: " + name + " not found\n")
 		return
@@ -53,7 +55,7 @@ func VMOperation(name string, cont string) {
 
 	exec.Command("virsh", cont, name).Start()
 	for {
-		status := CheckVMStatus(name)
+		status, _ := CheckVMStatus(name)
 		if (status == "active" && cont == "start") || (status == "inactive" && (cont == "shutdown" || cont == "destroy")) {
 			fmt.Print("success\n")
 			break

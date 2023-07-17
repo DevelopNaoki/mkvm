@@ -1,19 +1,40 @@
+hosts:
+  - hostname: kvm01.dev
+    port: 22
+    username: test
+    password: XXX
+    password-authorize: true
+    hypervisor: kvm
+  - hostname: hyperv01.dev
+    port: 22
+    username: test
+    password: XXX
+    password-authorize: true
+    hypervisor: hyper-v
 vms:
   - name: test
+    host: kvm01.dev
     count: 2
     vcpus: 1
     memory: 1024
     disk:
-      /var/kvm/images/test.img
+      - test-disk
     graphics: vnc,listen=0.0.0.0
     location: /var/kvm/isos/CentOS-7-x86_664-Minimal-2009_Auto.iso,kernel=isolinux/vmlinuz,initrd=isolinux/initrd.img
     extra-args: "inst.ks=cdrom:/ks/anaconda-ks.cfg inst.stage2=cdrom console=tty0 console=ttyS0,115200n8"
     network:
-    - virbr0
+      - internal-network
 disks:
-  - path: /var/kvm/images/test.img
+  - name: test-disk
+    host: kvm01.dev
+    path: /var/kvm/images/test.img
     format: qcow2
     size: 16
+  - name: test-import-disk
+    path: /var/kvm/images/importDisk.img
+    import: true
 networks:
-  - name: virbr0
+  - name: internal-network
+    host: kvm01.dev
+    interface: virbr0
     type: bridge
